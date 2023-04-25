@@ -12,7 +12,7 @@ columna de la matriz M en la cual empieza el primer elemento de la submatriz P.*
 public class Ej_21_composicion_de_matrices {
 
 	public static void main(String[] args) {
-		int cantM = 4, cantP = 3;
+		int cantM = 4, cantP = 2;
 		boolean verificacion;
 		int matrizM[][] = new int[cantM][cantM];
 		int matrizP[][] = new int[cantP][cantP];
@@ -25,7 +25,7 @@ public class Ej_21_composicion_de_matrices {
 		matrizP = llenarMatriz(cantP, leer);
 		System.out.println("La matriz P ingresada es");
 		mostrarMatriz(matrizP, cantP);
-		verificacion = verificacion(matrizM,matrizP,cantM,cantP);
+		verificacion = verificacion(matrizM, matrizP, cantM, cantP);
 		System.out.println(verificacion);
 
 	}
@@ -35,9 +35,9 @@ public class Ej_21_composicion_de_matrices {
 		int vector[][] = new int[cantidad][cantidad];
 		for (int i = 0; i < cantidad; i++) {
 			for (int j = 0; j < cantidad; j++) {
-				System.out.println("Ingrese el elemento #"+indice);
+				System.out.println("Ingrese el elemento #" + indice);
 				vector[i][j] = leer.nextInt();
-				//vector[i][j] = (int) (Math.random() * 100);
+				// vector[i][j] = (int) (Math.random() * 100);
 				indice++;
 			}
 		}
@@ -58,30 +58,43 @@ public class Ej_21_composicion_de_matrices {
 	}
 
 	public static boolean verificacion(int vectorM[][], int vectorP[][], int cantM, int cantP) {
-		boolean validacion=true;
+		boolean validacion = true;
+		int cont = 0;
 		for (int i = 0; i < cantM; i++) {
 			for (int j = 0; j < cantM; j++) {
-				validacion=true;
-				if(vectorM[i][j]==vectorP[0][0]) {
+				validacion = true;
+				if (vectorM[i][j] == vectorP[0][0]) {
 					for (int k = 0; k < cantP; k++) {
 						for (int l = 0; l < cantP; l++) {
-							//System.out.println(vectorM[i+k][j+l]+",");
-							if(vectorM[i+k][j+l]==vectorP[k][l]) {
-								System.out.println("El elemento '"+vectorP[k][l]+"' Se encontro en la posicion: "+(i+k)+","+(j+l));
-							}else {
-								System.out.println("No se encontro continuacion en la posicion "+vectorM[i+k][j+l]);
-								validacion = false;
-								break;
+							if(((j+l)<cantM)&&((i+k)<cantM)) {
+								if (vectorM[i + k][j + l] == vectorP[k][l]) {
+									System.out.println("El elemento '" + vectorP[k][l] + "' Se encontro en la posicion: "
+											+ (i + k) + "," + (j + l));
+									cont++;
+								} else {
+									cont = 0;
+									validacion = false;
+									break;
+								}
 							}
 						}
+						if (validacion == false) {
+							break;
+						}
 					}
-					break;
-				}else {
-					validacion = true;
+				} else {
+					if (cont < Math.pow(cantP, 2)) {
+						validacion = false;
+						//System.out.println(cont);
+						continue;
+					} else {
+						validacion = true;
+						break;
+					}
 				}
 			}
 		}
+		System.out.println(cont);
 		return validacion;
 	}
-
 }
